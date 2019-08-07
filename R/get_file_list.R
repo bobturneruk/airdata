@@ -12,8 +12,6 @@ get_file_list<-function(){
 
   require(magrittr,dplyr,rvest,curl)
 
-  `%>%` <- magrittr::`%>%`
-
   url<-"http://archive.luftdaten.info/parquet/"
 
   start_time<-Sys.time()
