@@ -1,0 +1,50 @@
+---
+title: "download_files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{download_files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(airdata)
+```
+
+```{r}
+list_of_parquet_files<-download_parquet()
+```
+
+```{r, warning=FALSE}
+list_of_parquet_files %>%
+  separate(size,c("size","unit"),"(?<=[0-9])(?=[A-Z])",convert=TRUE) %>%
+  mutate(
+    unit_numeric=case_when(
+      is.na(unit) ~ 1,
+      unit=="K" ~ 1024,
+      unit=="M" ~ 1024^2,
+      unit=="G" ~ 1024^3
+    )
+  ) %>%
+  mutate(size_GB=size*unit_numeric/1024^3) %>%
+  summarise(total_GB=sum(size_GB))
+```
+
+```{r}
+local_folder_path<-"J:/luftdaten_parquet/"
+local_files<-tibble(name=list.files(local_folder_path))
+```
+
+```{r}
+download_report<-list_of_parquet_files %>%
+  anti_join(local_files) %>%
+  group_by(name,url) %>%
+  do(safe_download_file(.$url,.$name,local_folder_path))
+```

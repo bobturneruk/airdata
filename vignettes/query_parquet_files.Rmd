@@ -1,0 +1,45 @@
+---
+title: "query_parquet_files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{query_parquet_files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(airdata)
+library(tidyverse)
+library(sparklyr)
+```
+
+```{r}
+spark_install(version="2.4.3") #latest version
+sc <- spark_connect(master = "local")
+```
+
+```{r}
+luftdaten_df<-spark_read_parquet(sc,"luftdaten","J:/luftdaten_parquet",memory=FALSE)
+```
+
+```{r}
+sensor_summary<-luftdaten_df %>%
+  group_by(sensor_type) %>%
+  summarise(number_of_sensor_readings=n()) %>%
+  collect()
+```
+
+```{r}
+sensor_summary %>%
+  ggplot(aes(x=sensor_type,y=number_of_sensor_readings))+
+  geom_col()+
+  scale_y_log10()+
+  coord_flip()
+```
