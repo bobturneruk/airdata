@@ -1,5 +1,5 @@
 ---
-title: "download_files"
+title: "Download the complete Luftdaten dataset"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{download_files}
@@ -16,10 +16,12 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(airdata)
+library(tidyr)
+library(magrittr)
 ```
 
 ```{r}
-list_of_parquet_files<-download_parquet()
+list_of_parquet_files<-file_list()
 ```
 
 ```{r, warning=FALSE}
@@ -38,12 +40,12 @@ list_of_parquet_files %>%
 ```
 
 ```{r}
-local_folder_path<-"J:/luftdaten_parquet/"
+local_folder_path<-"J:/parquet_vignette/"
 local_files<-tibble(name=list.files(local_folder_path))
 ```
 
 ```{r}
-download_report<-list_of_parquet_files %>%
+download_report<-list_of_parquet_files[1:10,] %>%
   anti_join(local_files) %>%
   group_by(name,url) %>%
   do(safe_download_file(.$url,.$name,local_folder_path))
