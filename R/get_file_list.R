@@ -1,7 +1,9 @@
 #' Get File List
 #'
+#'
 #' This function accesses the luftdaten website (http://archive.luftdaten.info/parquet/) and downloads a
 #' list of available parquet files containing project data.
+#'
 #'
 #' @return A list of .parquet files
 
