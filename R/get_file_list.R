@@ -6,6 +6,7 @@
 #'
 #'
 #' @return A list of .parquet files
+#' @export
 
 get_file_list<-function(){
 
