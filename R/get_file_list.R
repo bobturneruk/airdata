@@ -8,7 +8,6 @@
 #' @return A list of .parquet files
 
 get_file_list<-function(){
-  require(curl, dplyr, rvest, magrittr)
 
   url<-"http://archive.luftdaten.info/parquet/"
 
