@@ -10,7 +10,7 @@
 
 get_file_list<-function(){
 
-  require(magritter,dplyr,rvest,curl)
+  require(magrittr,dplyr,rvest,curl)
 
   url<-"http://archive.luftdaten.info/parquet/"
 
