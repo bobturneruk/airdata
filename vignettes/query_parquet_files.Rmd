@@ -26,7 +26,7 @@ sc <- spark_connect(master = "local")
 ```
 
 ```{r}
-luftdaten_df<-spark_read_parquet(sc,"luftdaten","J:/luftdaten_parquet",memory=FALSE)
+luftdaten_df<-spark_read_parquet(sc,"luftdaten","J:/parquet_vignette",memory=FALSE)
 ```
 
 ```{r}
